@@ -1,11 +1,11 @@
 package app
 
 import (
-	"sundorWeb/todos/model"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+	"sundorWeb/todos/model"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"

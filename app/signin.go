@@ -24,7 +24,7 @@ type GoogleUserId struct {
 }
 
 var googleOauthConfig = oauth2.Config{
-	RedirectURL:  "http://localhost:3000/auth/google/callback", // oauth 끝나고 구글에서 돌려줄때 callback 받을 주소 기입 구글에 id 발급 받을때 기입한 주소임
+	RedirectURL:  os.Getenv("DOMAIN_NAME")+"/auth/google/callback", // oauth 끝나고 구글에서 돌려줄때 callback 받을 주소 기입 구글에 id 발급 받을때 기입한 주소임
 	ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 	ClientSecret: os.Getenv("GOOGLE_SECRET_KEY"),
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
