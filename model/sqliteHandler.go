@@ -11,7 +11,7 @@ type sqliteHandler struct {
 	db *sql.DB
 }
 
-func chkErr(err error) {
+func ChkErr(err error) {
 	if err != nil {
 		panic(err)
 	}
@@ -20,7 +20,7 @@ func chkErr(err error) {
 func (s *sqliteHandler) GetTodos(sessionId string) []*Todo {
 	todos := []*Todo{}
 	rows, err := s.db.Query("SELECT id, name, completed, createdAt FROM todos WHERE sessionId=?", sessionId)
-	chkErr(err)
+	ChkErr(err)
 	defer rows.Close()
 
 	for rows.Next() {
@@ -33,10 +33,10 @@ func (s *sqliteHandler) GetTodos(sessionId string) []*Todo {
 
 func (s *sqliteHandler) AddTodo(name, sessionId string) *Todo {
 	stmt, err := s.db.Prepare("INSERT INTO todos (sessionId, name, completed, createdAt) VALUES (?, ?, ?, datetime('now'))")
-	chkErr(err)
+	ChkErr(err)
 	
 	rst, err := stmt.Exec(sessionId, name, false)
-	chkErr(err)
+	ChkErr(err)
 	id, _ := rst.LastInsertId()
 	var todo Todo
 	todo.ID = int(id)
@@ -48,21 +48,21 @@ func (s *sqliteHandler) AddTodo(name, sessionId string) *Todo {
 
 func (s *sqliteHandler) RemoveTodo(id int) bool {
 	stmt, err := s.db.Prepare("DELETE FROM todos WHERE id=?")
-	chkErr(err)
+	ChkErr(err)
 	rst, err := stmt.Exec(id)
-	chkErr(err)
+	ChkErr(err)
 	cnt, err := rst.RowsAffected()
-	chkErr(err)	
+	ChkErr(err)	
 	return cnt>0
 }
 
 func (s *sqliteHandler) CompleteTodo(id int, complete bool) bool {
 	stmt, err := s.db.Prepare("UPDATE todos SET completed=? WHERE id=?")
-	chkErr(err)
+	ChkErr(err)
 	rst, err := stmt.Exec(complete, id)
-	chkErr(err)
+	ChkErr(err)
 	cnt, err := rst.RowsAffected()
-	chkErr(err)
+	ChkErr(err)
 	return cnt>0
 }
 
@@ -73,7 +73,7 @@ func (s *sqliteHandler) Close() {
 func newSqliteHandler(filepath string) DBHandler {
 	
 	database, err := sql.Open("sqlite3", filepath)
-	chkErr(err)
+	ChkErr(err)
 	
 	statement, _ := database.Prepare(
 		`CREATE TABLE IF NOT EXISTS todos (
