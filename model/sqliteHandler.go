@@ -77,7 +77,7 @@ func newSqliteHandler(filepath string) DBHandler {
 	
 	statement, _ := database.Prepare(
 		`CREATE TABLE IF NOT EXISTS todos (
-			id SERIAL PRIMARY KEY,
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			sessionId STRING,
 			name TEXT,
 			completed BOOLEAN,
