@@ -94,5 +94,5 @@ func newPqHandler(dbConn string) DBHandler {
 	chkErr(err)	
 	_, err = statement.Exec()
 	chkErr(err)
-	return &sqliteHandler{db: database}
+	return &pqHandler{db: database}
 }
