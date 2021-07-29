@@ -81,7 +81,7 @@ func newPqHandler(dbConn string) DBHandler {
 			sessionId VARCHAR(256),
 			name TEXT,
 			completed BOOLEAN,
-			createdAt DATETIME
+			createdAt TIMESTAMP
 		);`)
 	chkErr(err)	
 	_, err = statement.Exec()
