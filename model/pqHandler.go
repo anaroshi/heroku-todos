@@ -19,7 +19,7 @@ func chkErr(err error) {
 
 func (s *pqHandler) GetTodos(sessionId string) []*Todo {
 	todos := []*Todo{}
-	rows, err := s.db.Query("SELECT id, name, completed, createdAt FROM todos WHERE sessionId=?", sessionId)
+	rows, err := s.db.Query("SELECT id, name, completed, createdAt FROM todos WHERE sessionId=$1", sessionId)
 	chkErr(err)
 	defer rows.Close()
 
@@ -32,7 +32,7 @@ func (s *pqHandler) GetTodos(sessionId string) []*Todo {
 }
 
 func (s *pqHandler) AddTodo(name, sessionId string) *Todo {
-	stmt, err := s.db.Prepare("INSERT INTO todos (sessionId, name, completed, createdAt) VALUES (?, ?, ?, datetime('now'))")
+	stmt, err := s.db.Prepare("INSERT INTO todos (sessionId, name, completed, createdAt) VALUES ($1, $2, $3, now())")
 	chkErr(err)
 	
 	rst, err := stmt.Exec(sessionId, name, false)
@@ -47,7 +47,7 @@ func (s *pqHandler) AddTodo(name, sessionId string) *Todo {
 }
 
 func (s *pqHandler) RemoveTodo(id int) bool {
-	stmt, err := s.db.Prepare("DELETE FROM todos WHERE id=?")
+	stmt, err := s.db.Prepare("DELETE FROM todos WHERE id=$1")
 	chkErr(err)
 	rst, err := stmt.Exec(id)
 	chkErr(err)
@@ -57,7 +57,7 @@ func (s *pqHandler) RemoveTodo(id int) bool {
 }
 
 func (s *pqHandler) CompleteTodo(id int, complete bool) bool {
-	stmt, err := s.db.Prepare("UPDATE todos SET completed=? WHERE id=?")
+	stmt, err := s.db.Prepare("UPDATE todos SET completed=$1 WHERE id=$2")
 	chkErr(err)
 	rst, err := stmt.Exec(complete, id)
 	chkErr(err)
