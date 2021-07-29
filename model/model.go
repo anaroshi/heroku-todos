@@ -20,6 +20,6 @@ type DBHandler interface {
 }
 
 // 처음에 한번만 읽어들인다. 초기화시 사용
-func NewDBHandler(filepath string) DBHandler {
-	return newSqliteHandler(filepath)
+func NewDBHandler(dbConn string) DBHandler {
+	return newPqHandler(dbConn)
 }
